@@ -1,8 +1,8 @@
-# Fade Out
+# f a d e o u t
 
-**Fade out the noise.**
+**f a d e o u t the noise.**
 
-Fade Out is a small, native macOS menu bar mixer. Lower one app without changing the others, mute a noisy call, and keep your preferred levels when those apps play again. There is no audio driver, extension, account, or dependency to install.
+f a d e o u t is a small, native macOS menu bar mixer. Lower one app without changing the others, mute a noisy call, and keep your preferred levels when those apps play again. There is no audio driver, extension, account, or dependency to install.
 
 > Screenshots: menu bar mixer and permission flow coming with the first release.
 
@@ -13,8 +13,9 @@ Fade Out is a small, native macOS menu bar mixer. Lower one app without changing
 - Saved levels by bundle ID and optional launch at login
 - Keyboard and VoiceOver labels, light and dark appearance
 - No tap at 100% volume when master and app levels are both unchanged
+- It also works with most external audio cards
 
-Requires **macOS 14.2 or later**. Fade Out currently supports output formats that Core Audio exposes as 32-bit floating-point PCM with matching tap and output channel counts and sample rates. Some devices or protected audio may be unavailable.
+Requires **macOS 14.2 or later**. f a d e o u t currently supports output formats that Core Audio exposes as 32-bit floating-point PCM with matching tap and output channel counts and sample rates. Some devices or protected audio may be unavailable.
 
 ## Install
 
@@ -33,21 +34,19 @@ The reusable audio engine is also a Swift package: `swift build` and `swift test
 
 Download `FadeOut.app.zip` from this repository's Releases page when the first signed release is published. The release workflow also makes an unsigned universal build artifact for maintainers. Homebrew cask `fade-out` is planned and is not available yet.
 
-An unsigned universal macOS installer is available at [`dist/FadeOut-1.0.0-unsigned-universal.pkg`](dist/FadeOut-1.0.0-unsigned-universal.pkg). It installs Fade Out in `/Applications`. Because it is not signed or notarized, macOS may require explicit approval to open it; it should not be presented as a signed public release.
+An unsigned universal macOS installer is available at [`dist/FadeOut-1.0.0-unsigned-universal.pkg`](dist/FadeOut-1.0.0-unsigned-universal.pkg). It installs f a d e o u t in `/Applications`. Because it is not signed or notarized, macOS may require explicit approval to open it; it should not be presented as a signed public release.
 
 ## How it works
 
-Core Audio reports processes that are actively running output. When you lower one, Fade Out creates a private process tap, places it in an aggregate device with your chosen output, and applies a smooth gain ramp in a C audio callback. The original process output is suppressed only while the tap is being read. Restoring a row and the master to 100% tears the tap down. The app uses HAL property listeners, not a polling loop.
+Core Audio reports processes that are actively running output. When you lower one, f a d e o u t creates a private process tap, places it in an aggregate device with your chosen output, and applies a smooth gain ramp in a C audio callback. The original process output is suppressed only while the tap is being read. Restoring a row and the master to 100% tears the tap down. The app uses HAL property listeners, not a polling loop.
 
-The first adjustment triggers macOS's **System Audio Recording** permission request. Fade Out shows an explanation first. This permission is needed to capture and replay sound from adjusted apps; audio is processed on your Mac and is not recorded to a file or sent anywhere.
+The first adjustment triggers macOS's **System Audio Recording** permission request. f a d e o u t shows an explanation first. This permission is needed to capture and replay sound from adjusted apps; audio is processed on your Mac and is not recorded to a file or sent anywhere.
 
 ## FAQ
 
-**Why is an app missing?** It appears when Core Audio reports active output. Start playback, then check the menu again. Some protected or unusual audio paths may not be tappable.
+**Why did an adjustment fail?** Check System Settings → Privacy & Security → Screen & System Audio Recording and allow f a d e o u t. Quit and reopen after changing permission. A device whose format cannot be safely copied into the aggregate output is rejected with an error in the menu.
 
-**Why did an adjustment fail?** Check System Settings → Privacy & Security → Screen & System Audio Recording and allow Fade Out. Quit and reopen after changing permission. A device whose format cannot be safely copied into the aggregate output is rejected with an error in the menu.
-
-**Why does changing the output picker affect only adjusted apps?** At 100%, an app stays on its normal system route. Fade Out routes only sound passing through an active tap.
+**Why does changing the output picker affect only adjusted apps?** At 100%, an app stays on its normal system route. f a d e o u t routes only sound passing through an active tap.
 
 **What happens when headphones disconnect or the Mac sleeps?** The app listens for device changes and rebuilds active taps; it stops taps on sleep and recreates them after wake. If a device disappears, it falls back to the current default output.
 
