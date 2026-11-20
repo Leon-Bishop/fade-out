@@ -33,6 +33,8 @@ The reusable audio engine is also a Swift package: `swift build` and `swift test
 
 Download `FadeOut.app.zip` from this repository's Releases page when the first signed release is published. The release workflow also makes an unsigned universal build artifact for maintainers. Homebrew cask `fade-out` is planned and is not available yet.
 
+An unsigned universal macOS installer is available at [`dist/FadeOut-1.0.0-unsigned-universal.pkg`](dist/FadeOut-1.0.0-unsigned-universal.pkg). It installs Fade Out in `/Applications`. Because it is not signed or notarized, macOS may require explicit approval to open it; it should not be presented as a signed public release.
+
 ## How it works
 
 Core Audio reports processes that are actively running output. When you lower one, Fade Out creates a private process tap, places it in an aggregate device with your chosen output, and applies a smooth gain ramp in a C audio callback. The original process output is suppressed only while the tap is being read. Restoring a row and the master to 100% tears the tap down. The app uses HAL property listeners, not a polling loop.

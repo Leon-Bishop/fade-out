@@ -24,12 +24,17 @@ jobs:
           lipo -archs DerivedData/Build/Products/Release/FadeOut.app/Contents/MacOS/FadeOut
           ditto -c -k --sequesterRsrc --keepParent \
             DerivedData/Build/Products/Release/FadeOut.app FadeOut.app.zip
+          pkgbuild --component DerivedData/Build/Products/Release/FadeOut.app \
+            --install-location /Applications --identifier com.howldev.fadeout.pkg \
+            --version "${GITHUB_REF_NAME#v}" FadeOut-unsigned-universal.pkg
       - name: Upload unsigned build
         uses: actions/upload-artifact@v4
         with:
           name: FadeOut-unsigned-universal
-          path: FadeOut.app.zip
+          path: |
+            FadeOut.app.zip
+            FadeOut-unsigned-universal.pkg
       - name: Create draft release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" FadeOut.app.zip --draft --title "$GITHUB_REF_NAME" --notes "Unsigned universal build. Sign and notarize before public distribution."
+        run: gh release create "$GITHUB_REF_NAME" FadeOut.app.zip FadeOut-unsigned-universal.pkg --draft --title "$GITHUB_REF_NAME" --notes "Unsigned universal build. Sign and notarize before public distribution."
