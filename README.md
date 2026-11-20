@@ -56,3 +56,9 @@ The first adjustment triggers macOS's **System Audio Recording** permission requ
 See [CONTRIBUTING.md](CONTRIBUTING.md), [the architecture notes](docs/ARCHITECTURE.md), and [distribution notes](docs/DISTRIBUTION.md). The project is MIT licensed.
 
 Made by Howl Dev
+
+## Windows
+
+The native Windows companion lives in [`windows/FadeOut.Windows`](windows/FadeOut.Windows). It uses Windows Audio Session APIs through NAudio to control the master endpoint and per-app audio sessions, follows the current default output device, keeps inactive app sessions visible, groups browser processes, remembers app levels, and can run from the system tray.
+
+The Windows workflow publishes a self-contained `win-x64` executable in `FadeOut-Windows-x64.zip`. It requires Windows 10 version 1809 or later and does not require a separate .NET installation.
