@@ -1,6 +1,6 @@
 # Fade out
 
-**Fade out the noise.**
+**Silence the noise.**
 
 Fade out is a small, native macOS menu bar mixer. Lower one app without changing the others, mute a noisy call, and keep your preferred levels when those apps play again. There is no audio driver, extension, account, or dependency to install.
 
