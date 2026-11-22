@@ -44,6 +44,7 @@ struct FadeOutAudioTests {
 
     @Test func appPriorityOrdersMusicBrowserCommunicationThenOther() {
         #expect(AppSortPriority.classify(bundleID: "com.spotify.client", name: "Spotify") == .music)
+        #expect(AppSortPriority.classify(bundleID: "com.kv.Aural", name: "Aural") == .music)
         #expect(AppSortPriority.classify(bundleID: "com.google.Chrome.app.pwa", name: "YouTube Music") == .music)
         #expect(AppSortPriority.classify(bundleID: "com.apple.Safari", name: "Safari") == .browser)
         #expect(AppSortPriority.classify(bundleID: "com.hnc.Discord", name: "Discord") == .communication)
@@ -51,6 +52,14 @@ struct FadeOutAudioTests {
         #expect(AppSortPriority.music < .browser)
         #expect(AppSortPriority.browser < .communication)
         #expect(AppSortPriority.communication < .other)
+    }
+
+    @Test func musicDirectoryRecognizesDockAndMenuBarPlayers() {
+        #expect(MusicAppDirectory.contains(bundleID: "com.kv.Aural", name: "Aural"))
+        #expect(MusicAppDirectory.contains(bundleID: "com.spotify.client", name: "Spotify"))
+        #expect(MusicAppDirectory.contains(bundleID: "unknown.direct.build", name: "Plexamp"))
+        #expect(!MusicAppDirectory.contains(bundleID: "com.apple.Terminal", name: "Terminal"))
+        #expect(AppSortPriority.classify(bundleID: "unknown.direct.build", name: "Aural") == .music)
     }
 
     @Test func visibilityExcludesNonAudioUtilitiesButKeepsSilentCapableApps() {
@@ -66,6 +75,10 @@ struct FadeOutAudioTests {
         #expect(AppVisibilityPolicy.shouldShow(
             bundleID: "com.spotify.client", name: "Spotify",
             categoryIdentifier: "public.app-category.music",
+            isActivelyProducingSound: false))
+        #expect(AppVisibilityPolicy.shouldShow(
+            bundleID: "com.kv.Aural", name: "Aural",
+            categoryIdentifier: nil,
             isActivelyProducingSound: false))
         #expect(AppVisibilityPolicy.shouldShow(
             bundleID: "com.apple.Safari", name: "Safari",

@@ -102,7 +102,9 @@ final class MixerModel: ObservableObject {
     private func rebuildRows() {
         let fallbackIcon = NSImage(systemSymbolName: "app.fill", accessibilityDescription: nil) ?? NSImage()
         let runningApps = NSWorkspace.shared.runningApplications.filter {
-            $0.activationPolicy == .regular &&
+            // Audio players may deliberately run as accessory/menu-bar apps (Aural is one).
+            // Keep real UI applications while still rejecting prohibited daemon processes.
+            ($0.activationPolicy == .regular || $0.activationPolicy == .accessory) &&
                 !$0.isTerminated &&
                 $0.bundleIdentifier != "com.howldev.fadeout" &&
                 $0.bundleIdentifier != nil
@@ -127,6 +129,27 @@ final class MixerModel: ObservableObject {
                     categoryIdentifier: category
                 ),
                 volume: settings.volume(for: identity.bundleID)
+            )
+        }
+
+        // Some music players run only in the menu bar or do not register a Core Audio client
+        // until playback starts. Keep recognized launched players available so their saved level
+        // is ready and is applied as soon as their audio process appears.
+        for app in runningApps {
+            guard let bundleID = app.bundleIdentifier, visible[bundleID] == nil else { continue }
+            let name = app.localizedName ?? bundleID
+            let category = appCategoryIdentifier(for: app)
+            let priority = AppSortPriority.classify(bundleID: bundleID,
+                                                    name: name,
+                                                    categoryIdentifier: category)
+            guard priority == .music else { continue }
+            visible[bundleID] = AppRow(
+                id: bundleID,
+                bundleID: bundleID,
+                name: name,
+                icon: app.icon ?? fallbackIcon,
+                sortPriority: priority,
+                volume: settings.volume(for: bundleID)
             )
         }
 

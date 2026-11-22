@@ -33,7 +33,7 @@ The reusable audio engine is also a Swift package: `swift build` and `swift test
 
 Download `FadeOut.app.zip` from this repository's Releases page when the first signed release is published. The release workflow also makes an unsigned universal build artifact for maintainers. Homebrew cask `fade-out` is planned and is not available yet.
 
-An unsigned universal macOS installer is available at [`dist/FadeOut-1.0.0-unsigned-universal.pkg`](dist/FadeOut-1.0.0-unsigned-universal.pkg). It installs Fade Out in `/Applications`. Because it is not signed or notarized, macOS may require explicit approval to open it; it should not be presented as a signed public release.
+An unsigned universal macOS DMG is provided with the GitHub release. The app is not signed or notarized, so macOS may require explicit approval to open it; it should not be presented as a signed public release.
 
 ## How it works
 

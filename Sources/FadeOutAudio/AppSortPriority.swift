@@ -16,7 +16,9 @@ public enum AppSortPriority: Int, Comparable, Sendable {
         let category = categoryIdentifier?.lowercased() ?? ""
 
         // Check music first so a YouTube Music or Spotify PWA ranks above its browser host.
-        if category.contains("music") || category.contains("audio") || musicMarkers.contains(where: identity.contains) {
+        if category.contains("music") || category.contains("audio") ||
+            MusicAppDirectory.contains(bundleID: bundleID, name: name) ||
+            musicMarkers.contains(where: identity.contains) {
             return .music
         }
         if browserMarkers.contains(where: identity.contains) {
@@ -31,7 +33,7 @@ public enum AppSortPriority: Int, Comparable, Sendable {
     private static let musicMarkers = [
         "spotify", "com.apple.music", "youtube music", "youtubemusic", "tidal", "deezer",
         "soundcloud", "amazon music", "qobuz", "plexamp", "audirvana", "roon", "foobar",
-        "vlc", "iina", "musicbee", "winamp"
+        "com.kv.aural", "aural", "vlc", "iina", "musicbee", "winamp"
     ]
 
     private static let browserMarkers = [
