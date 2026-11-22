@@ -237,19 +237,47 @@ final class MixerModel: ObservableObject {
     }
 
     func setVolume(_ value: Double, for row: AppRow) {
-        settings.setVolume(value, for: row.bundleID)
-        if value > 0 { rememberedUnmuted[row.bundleID] = value }
-        for index in rows.indices where rows[index].bundleID == row.bundleID {
-            rows[index].volume = value
-        }
-        beginCaptureIfNeeded(for: value)
-        syncAudio()
+        setVolumes([row.bundleID: value])
+    }
+
+    func setVolume(_ value: Double, for groupedRows: [AppRow]) {
+        setVolumes(Dictionary(uniqueKeysWithValues: groupedRows.map { ($0.bundleID, value) }))
     }
 
     func toggleMute(_ row: AppRow) {
         let newValue = row.volume == 0 ? rememberedUnmuted[row.bundleID] ?? 1 : 0
         if row.volume > 0 { rememberedUnmuted[row.bundleID] = row.volume }
         setVolume(newValue, for: row)
+    }
+
+    func toggleMute(_ groupedRows: [AppRow]) {
+        let liveRows = rows.filter { candidate in
+            groupedRows.contains(where: { $0.bundleID == candidate.bundleID })
+        }
+        let shouldMute = liveRows.contains { $0.volume > 0 }
+        var changes: [String: Double] = [:]
+        for row in liveRows {
+            if shouldMute {
+                if row.volume > 0 { rememberedUnmuted[row.bundleID] = row.volume }
+                changes[row.bundleID] = 0
+            } else {
+                changes[row.bundleID] = rememberedUnmuted[row.bundleID] ?? 1
+            }
+        }
+        setVolumes(changes)
+    }
+
+    private func setVolumes(_ changes: [String: Double]) {
+        guard !changes.isEmpty else { return }
+        for (bundleID, value) in changes {
+            settings.setVolume(value, for: bundleID)
+            if value > 0 { rememberedUnmuted[bundleID] = value }
+            for index in rows.indices where rows[index].bundleID == bundleID {
+                rows[index].volume = value
+            }
+        }
+        if changes.values.contains(where: { $0 < 0.999 }) { requestCaptureAccessIfNeeded() }
+        syncAudio()
     }
 
     private func beginCaptureIfNeeded(for value: Double) {

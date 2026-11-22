@@ -1,8 +1,5 @@
 .build/
 .swiftpm/
-windows/**/bin/
-windows/**/obj/
-dist/windows/
 *.user
 DerivedData/
 build/
