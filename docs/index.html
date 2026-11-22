@@ -668,7 +668,7 @@ html.js .reveal.is-visible {opacity:1;transform:translateY(0)}
     fetch('https://api.github.com/repos/Leon-Bishop/fade-out/releases/latest', {headers:{Accept:'application/vnd.github+json'}})
       .then(response=>{if(!response.ok)throw new Error('Release unavailable');return response.json();})
       .then(release=>{
-        const dmg=(release.assets||[]).find(asset=>/\\.dmg$/i.test(asset.name) && asset.browser_download_url);
+        const dmg=(release.assets||[]).find(asset=>/\.dmg$/i.test(asset.name) && asset.browser_download_url);
         if(dmg){
           downloadLink.href=dmg.browser_download_url;
           downloadLink.setAttribute('aria-label','Download Fade Out DMG for macOS');
