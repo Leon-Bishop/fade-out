@@ -120,7 +120,7 @@ html[data-theme="light"] .download-button.resonance {
 .resonance .apple {display:block;flex:none;width:23px;height:23px;fill:currentColor}
 .resonance .label {white-space:nowrap;letter-spacing:-.03em}
 .resonance .res-noise {display:flex;align-items:center;gap:2px;flex:none;color:var(--res-bars)}
-.resonance .res-noise i {display:block;width:2px;height:var(--bar);background:currentColor;border-radius:5px}
+.resonance .res-noise i {display:block;width:2px;height:var(--bar);background:currentColor;border-radius:5px;animation:resonance-dance 1.05s ease-in-out var(--delay) infinite alternate;will-change:transform}
 .resonance:is(:hover,:focus-visible) {transform:translateY(-2px)}
 .resonance:is(:hover,:focus-visible) .res-core {
   transform:rotate(0deg) scale(1.018);
@@ -133,13 +133,9 @@ html[data-theme="light"] .download-button.resonance {
 }
 .resonance:active {transform:scale(.98)}
 @keyframes resonance-dance {to{transform:scaleY(1.85)}}
-/* Phones and touch tablets have no hover. Bring the sound-wave bars to life
-   automatically, without requiring a tap or long press. */
+/* Touch devices retain the soft breathing effect; sound bars now animate on
+   all devices automatically, including desktop without hover. */
 @media (hover:none), (pointer:coarse) {
-  .resonance .res-noise i {
-    animation:resonance-dance 1.05s ease-in-out var(--delay) infinite alternate;
-    will-change:transform;
-  }
   .resonance .res-core {
     animation:resonance-breathe 4.8s ease-in-out infinite alternate;
   }
