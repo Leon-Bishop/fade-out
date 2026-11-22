@@ -112,22 +112,22 @@ html[data-theme="light"] .download-button.resonance {
   border:1px solid var(--res-border);
   border-radius:24px 17px 27px 19px/20px 28px 18px 26px;
   box-shadow:0 12px 24px rgba(0,21,12,.19),inset 0 1px 0 rgba(255,255,255,.12);
-  transform:rotate(-1.1deg);
+  transform:none;
   transition:transform .4s cubic-bezier(.2,.85,.3,1),border-radius .5s,
     background-color .35s ease,color .35s ease,border-color .35s ease,box-shadow .35s ease;
 }
-.resonance .res-core>* {transform:rotate(1.1deg);transition:transform .4s cubic-bezier(.2,.85,.3,1)}
+.resonance .res-core>* {transform:none;transition:transform .4s cubic-bezier(.2,.85,.3,1)}
 .resonance .apple {display:block;flex:none;width:23px;height:23px;fill:currentColor}
 .resonance .label {white-space:nowrap;letter-spacing:-.03em}
 .resonance .res-noise {display:flex;align-items:center;gap:2px;flex:none;color:var(--res-bars)}
 .resonance .res-noise i {display:block;width:2px;height:var(--bar);background:currentColor;border-radius:5px;animation:resonance-dance 1.05s ease-in-out var(--delay) infinite alternate;will-change:transform}
 .resonance:is(:hover,:focus-visible) {transform:translateY(-2px)}
 .resonance:is(:hover,:focus-visible) .res-core {
-  transform:rotate(0deg) scale(1.018);
+  transform:scale(1.018);
   border-radius:19px 27px 17px 28px/29px 18px 27px 18px;
   background:var(--res-hover);box-shadow:0 16px 26px rgba(0,21,12,.23);
 }
-.resonance:is(:hover,:focus-visible) .res-core>* {transform:rotate(0)}
+.resonance:is(:hover,:focus-visible) .res-core>* {transform:none}
 .resonance:is(:hover,:focus-visible) .res-noise i {
   animation:resonance-dance .58s ease-in-out var(--delay) infinite alternate;
 }
@@ -140,14 +140,14 @@ html[data-theme="light"] .download-button.resonance {
     animation:resonance-breathe 4.8s ease-in-out infinite alternate;
   }
   .resonance:active .res-core {
-    transform:rotate(0deg) scale(.985);
+    transform:scale(.985);
     background:var(--res-hover);
   }
-  .resonance:active .res-core>* {transform:rotate(0deg)}
+  .resonance:active .res-core>* {transform:none}
 }
 @keyframes resonance-breathe {
-  from {transform:rotate(-1.1deg) scale(1)}
-  to {transform:rotate(-.65deg) scale(1.012)}
+  from {transform:scale(1)}
+  to {transform:scale(1.012)}
 }
 @media(max-width:450px) {
   .download-button.resonance {height:70px;font-size:clamp(12.5px,4vw,17px);max-width:350px}
@@ -159,8 +159,8 @@ html[data-theme="light"] .download-button.resonance {
 @media(prefers-reduced-motion:reduce) {
   .download-button.resonance,.resonance .res-core,.resonance .res-core>*,.resonance .res-noise i {animation:none!important;transition:none!important}
   .resonance:is(:hover,:focus-visible),.resonance:active {transform:none}
-  .resonance:is(:hover,:focus-visible) .res-core {transform:rotate(-1.1deg)}
-  .resonance:is(:hover,:focus-visible) .res-core>* {transform:rotate(1.1deg)}
+  .resonance:is(:hover,:focus-visible) .res-core {transform:none}
+  .resonance:is(:hover,:focus-visible) .res-core>* {transform:none}
 }
 .download-note {font-size:11px;letter-spacing:.025em;color:var(--soft);margin:9px 0 0 8px}
 .hero-preview {display:flex;flex-direction:column;justify-content:center;align-items:center;gap:13px;min-width:0}
