@@ -45,8 +45,8 @@ html[data-theme="light"] .page::before {opacity:.18}
 /* One uninterrupted crossfade between complete rendered color themes.
    No competing background/color transitions underneath the snapshots. */
 @keyframes fadeout-theme-in {from {opacity:0} to {opacity:1}}
-::view-transition-old(root) {animation:none}
-::view-transition-new(root) {animation:fadeout-theme-in .72s cubic-bezier(.22,1,.36,1) both}
+::view-transition-old(root) {animation:none;mix-blend-mode:normal}
+::view-transition-new(root) {animation:fadeout-theme-in .72s cubic-bezier(.22,1,.36,1) both;mix-blend-mode:normal}
 
 /* Browsers without the View Transitions API still soften palette changes. */
 html.theme-fallback body,
