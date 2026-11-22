@@ -97,6 +97,39 @@ h1 {font-size:clamp(64px,7vw,91px);font-weight:600;line-height:1.05;letter-spaci
 .footer-utilities {display:flex;align-items:center;gap:11px}
 .info-symbol {font-size:15px;line-height:1}
 .power-symbol {font-size:18px;line-height:1;color:#0d5039}
+
+/* Alternate vertical-fader view, matched to the app screenshot. */
+.app-layout-toggle {color:#0d382b;border:1px solid rgba(31,70,52,.18);background:rgba(255,255,255,.3);border-radius:6px;width:26px;height:24px;display:grid;place-items:center;padding:0;flex:none}
+.app-layout-toggle:hover {background:#fff}
+.app-layout-toggle svg {grid-area:1/1;width:16px;height:16px}
+.app-layout-toggle .layout-to-list {display:none}
+.app-preview[data-layout="faders"] .layout-to-list {display:block}
+.app-preview[data-layout="faders"] .layout-to-faders {display:none}
+.vertical-mixer {display:none;min-width:0;margin:7px -4px 1px}
+.app-preview[data-layout="faders"] .vertical-mixer {display:block}
+.app-preview[data-layout="faders"] .master-row,
+.app-preview[data-layout="faders"] .mixer-inset,
+.app-preview[data-layout="faders"] .app-footer {display:none}
+.app-preview[data-layout="faders"] .app-heading {height:22px}
+.fader-scroll {max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#658f7b rgba(81,127,95,.18);padding-bottom:5px}
+.fader-scroll::-webkit-scrollbar {height:5px}
+.fader-scroll::-webkit-scrollbar-track {background:rgba(69,118,92,.14);border-radius:8px}
+.fader-scroll::-webkit-scrollbar-thumb {background:#668e77;border-radius:8px}
+.fader-track {display:flex;min-width:max-content;align-items:stretch;padding:0 1px}
+.fader-channel {width:53px;flex:0 0 53px;display:flex;flex-direction:column;align-items:center;text-align:center;border-right:1px solid rgba(26,73,47,.09);padding:0 1px 1px;color:#14362b}
+.fader-channel:last-child {border-right:0}
+.fader-channel-icon {height:19px;width:19px;border-radius:5px;object-fit:cover;flex:none;margin:0 auto}
+.fader-master-icon {display:grid;place-items:center;background:#dbe8d3;color:#204734;font-size:10px;font-weight:800}
+.fader-mail-icon {display:grid;place-items:center;background:linear-gradient(145deg,#54bbff,#1776e7);color:#fff}
+.fader-mail-icon svg {width:15px;height:15px}
+.fader-rail {width:24px;height:79px;position:relative;flex:none;margin:5px auto 2px}
+.fader-range {--fill:50%;appearance:none;-webkit-appearance:none;position:absolute;top:37px;left:-28px;width:80px;height:4px;border:0;border-radius:20px;padding:0;transform:rotate(-90deg);background:linear-gradient(to right,#104f38 var(--fill),#dfe4d9 var(--fill));cursor:pointer}
+.fader-range::-webkit-slider-thumb {-webkit-appearance:none;appearance:none;width:15px;height:15px;background:#fff;border:0;border-radius:50%;box-shadow:0 1px 5px rgba(0,0,0,.17)}
+.fader-range::-moz-range-thumb {width:15px;height:15px;background:#fff;border:0;border-radius:50%;box-shadow:0 1px 5px rgba(0,0,0,.17)}
+.fader-number {font-size:9px;font-weight:700;color:#1c4937;line-height:1.25;font-variant-numeric:tabular-nums}
+.fader-name {display:block;font-size:9px;line-height:1.25;color:#18362a;margin-top:2px;white-space:nowrap}
+.fader-scroll-hint {height:4px;background:rgba(54,100,70,.16);border-radius:999px;margin-top:4px;overflow:hidden}
+.fader-scroll-hint span {display:block;width:93%;height:100%;background:#557e69;border-radius:999px}
 /* Section headings */
 .content-section {position:relative}
 .section-heading {display:flex;align-items:center;justify-content:center;gap:42px;margin:5px 0 29px;text-align:center}
@@ -336,7 +369,7 @@ html.js .reveal.is-visible {opacity:1;transform:translateY(0)}
     <p class="download-note">macOS 14.2+</p>
   </div>
   <div class="hero-preview reveal"><div class="app-preview" role="group" aria-label="Fade Out mixer interface preview">
-      <div class="app-heading"><span class="app-wordmark">fadeout</span><span class="app-compact-icon" aria-hidden="true"><svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M11 3v14"/></svg></span></div>
+      <div class="app-heading"><span class="app-wordmark">fadeout</span><button class="app-layout-toggle" type="button" aria-label="Show vertical faders" aria-pressed="false" title="Switch mixer layout"><svg class="layout-to-faders" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M11 3v14"/></svg><svg class="layout-to-list" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M3 10h14"/></svg></button></div>
       <div class="master-row"><span>master</span><input class="volume-range master-range" type="range" aria-label="Master volume (visual preview)" min="0" max="100" value="35" style="--fill:35%"/><output>35%</output></div>
       <div class="mixer-inset">
         <div class="mixer-heading"><span>mixer</span><span>4 active</span></div>
@@ -389,7 +422,7 @@ html.js .reveal.is-visible {opacity:1;transform:translateY(0)}
     <svg class="demo-trees" viewBox="0 0 300 105" aria-hidden="true"><g fill="currentColor"><path d="M0 99q80-45 140-15t160 5v16H0Z" opacity=".36"/><path d="m5 102 16-39H11l13-29 13 29H27l16 39ZM46 102 63 63H52l14-29 16 29H71l17 39ZM89 103l13-31h-8l11-27 12 27h-8l14 31ZM128 103l17-40h-9l13-31 14 31h-8l18 40Z" opacity=".8"/></g></svg>
     <div class="demo-copy"><h2 id="demo-title">In action</h2><p>A simple, native audio mixer for your everyday apps.</p></div>
     <div class="demo-preview"><div class="app-preview" role="group" aria-label="Fade Out mixer interface preview">
-      <div class="app-heading"><span class="app-wordmark">fadeout</span><span class="app-compact-icon" aria-hidden="true"><svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M11 3v14"/></svg></span></div>
+      <div class="app-heading"><span class="app-wordmark">fadeout</span><button class="app-layout-toggle" type="button" aria-label="Show vertical faders" aria-pressed="false" title="Switch mixer layout"><svg class="layout-to-faders" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M11 3v14"/></svg><svg class="layout-to-list" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M3 10h14"/></svg></button></div>
       <div class="master-row"><span>master</span><input class="volume-range master-range" type="range" aria-label="Master volume (visual preview)" min="0" max="100" value="35" style="--fill:35%"/><output>35%</output></div>
       <div class="mixer-inset">
         <div class="mixer-heading"><span>mixer</span><span>4 active</span></div>
@@ -446,6 +479,92 @@ html.js .reveal.is-visible {opacity:1;transform:translateY(0)}
       input.addEventListener('input',update);update();
     });
     preview.querySelectorAll('.mute-control').forEach(button=>{button.addEventListener('click',()=>{const muted=button.getAttribute('aria-pressed')!=='true';button.setAttribute('aria-pressed',String(muted));const app=button.closest('.app-row').querySelector('.app-details span').textContent;button.setAttribute('aria-label',(muted?'Unmute ':'Mute ')+app+' in preview');})});
+  });
+
+  // The small split-view button switches each illustrative mixer between
+  // its original list view and the compact vertical faders used in Fade Out.
+  document.querySelectorAll('.app-preview').forEach(preview=>{
+    const toggle=preview.querySelector('.app-layout-toggle');
+    if(!toggle)return;
+    const panel=document.createElement('div');
+    panel.className='vertical-mixer';
+    const scroll=document.createElement('div');
+    scroll.className='fader-scroll';
+    scroll.tabIndex=0;
+    scroll.setAttribute('role','region');
+    scroll.setAttribute('aria-label','Scrollable vertical mixer controls');
+    const track=document.createElement('div');
+    track.className='fader-track';
+    const rows=[...preview.querySelectorAll('.app-row')];
+    const specs=[
+      {name:'master',row:preview.querySelector('.master-row'),value:51},
+      ...rows.map(row=>({name:row.querySelector('.app-details span').textContent.trim(),row})),
+      {name:'Mail',row:null,value:87}
+    ];
+    specs.forEach(spec=>{
+      const source=spec.row?.querySelector('input[type="range"]');
+      const item=document.createElement('div');
+      item.className='fader-channel';
+      let icon;
+      if(spec.name==='master'){
+        icon=document.createElement('span');
+        icon.className='fader-channel-icon fader-master-icon';
+        icon.textContent='M';
+      }else if(spec.name==='Mail'){
+        icon=document.createElement('span');
+        icon.className='fader-channel-icon fader-mail-icon';
+        icon.innerHTML='<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2.5" y="5" width="15" height="10" rx="2"/><path d="m3.2 6 6.8 5 6.8-5"/></svg>';
+      }else {
+        icon=spec.row.querySelector('.service-icon').cloneNode(true);
+        icon.className='fader-channel-icon';
+        icon.alt='';
+        icon.setAttribute('aria-hidden','true');
+      }
+      const rail=document.createElement('div');
+      rail.className='fader-rail';
+      const slider=document.createElement('input');
+      slider.className='fader-range';
+      slider.type='range';
+      slider.min='0';slider.max='100';
+      slider.setAttribute('aria-label',spec.name+' volume, vertical mixer preview');
+      const number=document.createElement('output');
+      number.className='fader-number';
+      const label=document.createElement('span');
+      label.className='fader-name';
+      label.textContent=spec.name;
+      const render=v=>{
+        const value=String(Math.max(0,Math.min(100,Math.round(Number(v)))));
+        slider.value=value;
+        slider.style.setProperty('--fill',value+'%');
+        number.textContent=value;
+      };
+      render(source?source.value:spec.value);
+      if(source)source.addEventListener('input',()=>render(source.value));
+      slider.addEventListener('input',()=>{
+        render(slider.value);
+        if(source){
+          source.value=slider.value;
+          source.dispatchEvent(new Event('input',{bubbles:true}));
+        }
+      });
+      rail.append(slider);
+      item.append(icon,rail,number,label);
+      track.append(item);
+    });
+    scroll.append(track);
+    panel.append(scroll);
+    const hint=document.createElement('div');
+    hint.className='fader-scroll-hint';
+    hint.setAttribute('aria-hidden','true');
+    hint.innerHTML='<span></span>';
+    panel.append(hint);
+    preview.querySelector('.app-heading').insertAdjacentElement('afterend',panel);
+    toggle.addEventListener('click',()=>{
+      const active=preview.dataset.layout!=='faders';
+      preview.dataset.layout=active?'faders':'list';
+      toggle.setAttribute('aria-pressed',String(active));
+      toggle.setAttribute('aria-label',active?'Show list mixer':'Show vertical faders');
+    });
   });
   const reveals=[...document.querySelectorAll('.reveal')];
   if(!('IntersectionObserver' in window)||window.matchMedia('(prefers-reduced-motion: reduce)').matches){reveals.forEach(el=>el.classList.add('is-visible'));}
