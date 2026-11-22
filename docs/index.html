@@ -90,9 +90,51 @@ h1,h2,h3,p {margin-top:0}
 h1,h2,h3 {font-family:'Fraunces',Georgia,serif;color:var(--ink)}
 h1 {font-size:clamp(64px,7vw,91px);font-weight:600;line-height:1.05;letter-spacing:-.075em;margin:0}
 .hero-tagline {font:italic clamp(30px,3.75vw,46px)/1.15 'Fraunces',Georgia,serif;color:var(--ink);text-align:right;margin:3px 20px 36px 0}
-.download-button {display:inline-flex;align-items:center;justify-content:center;gap:13px;background:#f4f1e8;color:#0a4131;border-radius:50px;padding:13px 25px;text-decoration:none;min-height:59px;font-size:23px;line-height:1;font-weight:700;box-shadow:0 10px 24px rgba(0,0,0,.24);transition:transform .22s,box-shadow .22s,background .22s}
-.download-button svg {width:26px;height:26px}
-.download-button:hover {transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,.3);background:#fffdf6}
+/* Resonance: a wave-emitting, asymmetrical download CTA. */
+.download-button.resonance {position:relative;display:flex;align-items:center;justify-content:center;
+  width:min(100%,420px);height:135px;min-height:0;padding:0;margin:0;
+  color:#eaf3df;background:transparent;border:0;border-radius:0;text-decoration:none;
+  font:700 clamp(14px,2.2vw,19px)/1.15 'DM Sans',system-ui,sans-serif;
+  isolation:isolate;touch-action:manipulation;outline-offset:5px;-webkit-tap-highlight-color:transparent;
+  transition:transform .3s cubic-bezier(.18,.9,.3,1)}
+.resonance .resonance-rings {position:absolute;inset:0;width:100%;height:100%;z-index:-2;overflow:visible;pointer-events:none}
+.resonance .resonance-rings path {fill:none;stroke:#b5dfb5;stroke-width:1.5;opacity:.4;
+  transform-origin:center;transition:opacity .45s,transform .65s cubic-bezier(.2,.8,.3,1)}
+.resonance .resonance-rings path:nth-child(2){opacity:.28}
+.resonance .resonance-rings path:nth-child(3){opacity:.19}
+.resonance .res-core {position:relative;display:flex;align-items:center;justify-content:center;gap:12px;
+  width:82%;height:77px;padding:0 12px;background:#0a4836;border:1px solid rgba(219,247,208,.62);
+  border-radius:24px 17px 27px 19px/20px 28px 18px 26px;
+  box-shadow:0 12px 26px rgba(0,21,12,.25),inset 0 1px 0 rgba(250,255,247,.2);
+  transform:rotate(-1.3deg);transition:transform .45s,border-radius .55s,background .3s}
+.resonance .res-core>* {transform:rotate(1.3deg)}
+.resonance .apple {display:block;flex:none;width:23px;height:23px;fill:currentColor}
+.resonance .label {white-space:nowrap;letter-spacing:-.03em}
+.resonance .res-noise {display:flex;align-items:center;gap:2px;color:#bfe1ab;flex:none}
+.resonance .res-noise i {display:block;width:2px;height:var(--bar);background:currentColor;border-radius:5px}
+.resonance:is(:hover,:focus-visible) .res-core {transform:rotate(0deg) scale(1.018);
+  border-radius:19px 27px 17px 28px/29px 18px 27px 18px;background:#116046}
+.resonance:is(:hover,:focus-visible) .res-core>* {transform:rotate(0deg)}
+.resonance:is(:hover,:focus-visible) .resonance-rings path:nth-child(1){transform:scale(1.045,1.1);opacity:.9}
+.resonance:is(:hover,:focus-visible) .resonance-rings path:nth-child(2){transform:scale(1.1,1.18);opacity:.65}
+.resonance:is(:hover,:focus-visible) .resonance-rings path:nth-child(3){transform:scale(1.16,1.25);opacity:.38}
+.resonance:is(:hover,:focus-visible) .res-noise i {animation:resonance-dance .58s ease-in-out var(--delay) infinite alternate}
+.resonance:active {transform:scale(.975)}
+@keyframes resonance-dance {to{transform:scaleY(1.85)}}
+@media(max-width:450px) {
+ .download-button.resonance {height:115px;font-size:clamp(12.5px,4vw,17px)}
+ .resonance .res-core {height:70px;width:91%;gap:7px;padding:0 8px}
+ .resonance .apple {width:20px;height:20px}
+ .resonance .res-noise {gap:1px}
+ .resonance .res-noise i {width:1.5px}
+}
+@media(prefers-reduced-motion:reduce) {
+ .download-button.resonance,.resonance .res-core,.resonance .res-core>*,
+ .resonance .resonance-rings path {animation:none!important;transition:none!important}
+ .resonance:is(:hover,:focus-visible),.resonance:active {transform:none}
+ .resonance:is(:hover,:focus-visible) .res-core {transform:rotate(-1.3deg)}
+ .resonance:is(:hover,:focus-visible) .res-core>* {transform:rotate(1.3deg)}
+}
 .download-note {font-size:11px;letter-spacing:.025em;color:var(--soft);margin:9px 0 0 8px}
 .hero-preview {display:flex;justify-content:center;align-items:center;min-width:0}
 /* Interface previews based on the provided real mixer screenshot. Preview controls are illustrative. */
@@ -208,8 +250,6 @@ h3 {font-size:23px;line-height:1.23;font-weight:600;letter-spacing:-.05em;margin
 .footer-item svg {width:18px;height:18px}
 .separator {width:1px;height:20px;background:var(--rule)}
 /* Light mode tweaks */
-html[data-theme="light"] .download-button {background:#0c412f;color:#f4f1e8}
-html[data-theme="light"] .download-button:hover {background:#195b41}
 html[data-theme="light"] .small-logo {color:#135039}
 html[data-theme="light"] .demo-card {background:linear-gradient(105deg,#e0ebd9,#f7f5eb)}
 html[data-theme="light"] .demo-trees {opacity:.23}
@@ -253,7 +293,7 @@ html.js .reveal.is-visible {opacity:1;transform:translateY(0)}
   .footer-nav {flex-wrap:wrap;gap:13px;font-size:12px}
   .footer-left {gap:14px}
 }
-@media (max-width:390px) {.hero-app-icon {width:54px;height:54px;flex-basis:54px;border-radius:15px}.hero-app-icon svg {width:40px;height:40px}h1 {font-size:54px}.hero-tagline {font-size:27px}.download-button {font-size:20px}.app-preview {padding:12px 10px 9px}.app-row {grid-template-columns:25px 1fr 25px;gap:6px}.app-details {font-size:11px}.footer-nav {gap:10px}}
+@media (max-width:390px) {.hero-app-icon {width:54px;height:54px;flex-basis:54px;border-radius:15px}.hero-app-icon svg {width:40px;height:40px}h1 {font-size:54px}.hero-tagline {font-size:27px} .download-button.resonance {font-size:clamp(12.5px,4vw,17px)}.app-preview {padding:12px 10px 9px}.app-row {grid-template-columns:25px 1fr 25px;gap:6px}.app-details {font-size:11px}.footer-nav {gap:10px}}
 @media (prefers-reduced-motion:reduce) {html {scroll-behavior:auto}*,*::before,*::after {animation-duration:.01ms!important;transition-duration:.01ms!important}html.js .reveal {opacity:1;transform:none}}
 </style>
 </head>
@@ -391,7 +431,18 @@ html.js .reveal.is-visible {opacity:1;transform:translateY(0)}
 <section class="hero" id="top" aria-labelledby="hero-title">
   <div class="hero-copy reveal"><div class="hero-heading"><span class="hero-app-icon"><svg viewBox="0 0 40 40" aria-hidden="true" focusable="false" fill="currentColor"><rect x="3" y="16" width="5" height="9" rx="2.5"/><rect x="11" y="9" width="5" height="23" rx="2.5"/><rect x="19" y="3" width="5" height="35" rx="2.5"/><rect x="27" y="10" width="5" height="21" rx="2.5"/><rect x="35" y="17" width="4" height="8" rx="2"/></svg></span><h1 id="hero-title">fade out</h1></div>
     <p class="hero-tagline">the noise</p>
-    <a class="download-button" href="https://github.com/Leon-Bishop/fade-out/releases/download/v1.0.1.pkg/FadeOut-unsigned-universal.pkg" aria-label="Download Fade Out for macOS"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17.564 12.894c-.021-2.23 1.82-3.31 1.904-3.364-1.042-1.525-2.664-1.735-3.235-1.753-1.357-.143-2.674.793-3.362.793-.688 0-1.752-.78-2.883-.755-1.484.024-2.877.863-3.634 2.19-1.55 2.69-.395 6.681 1.109 8.87.74 1.065 1.62 2.274 2.78 2.226 1.112-.046 1.53-.721 2.878-.721 1.346 0 1.721.721 2.882.699 1.191-.023 1.94-1.064 2.663-2.131.726-1.069 1.025-2.1 1.044-2.154-.02-.01-2.313-.885-2.336-3.9Zm-2.247-6.544c.61-.745 1.018-1.777.909-2.817-.889.039-1.953.589-2.586 1.333-.567.661-1.065 1.736-.93 2.714.982.076 1.976-.499 2.607-1.23Z"/></svg><span>Download for macOS</span></a>
+    <a class="download-button resonance" href="https://github.com/Leon-Bishop/fade-out/releases" aria-label="Find the Fade Out macOS download on GitHub Releases" title="The DMG will download directly once its release is published">
+     <svg class="resonance-rings" viewBox="0 0 430 136" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+       <path d="M50 50 C93 4 129 40 182 22 S300 11 340 31 S404 51 386 88 S293 128 236 112 S125 123 74 103 S34 68 50 50Z"/>
+       <path d="M32 52 C81 -1 128 25 181 12 S302 1 354 22 S426 52 402 99 S304 137 236 126 S125 132 64 115 S11 78 32 52Z"/>
+       <path d="M15 48 C74 -15 124 14 183 3 S317 -12 365 14 S445 57 414 111 S304 153 232 136 S118 146 48 124 S-12 76 15 48Z"/>
+     </svg>
+     <span class="res-core">
+       <svg class="apple" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17.564 12.894c-.021-2.23 1.82-3.31 1.904-3.364-1.042-1.525-2.664-1.735-3.235-1.753-1.357-.143-2.674.793-3.362.793-.688 0-1.752-.78-2.883-.755-1.484.024-2.877.863-3.634 2.19-1.55 2.69-.395 6.681 1.109 8.87.74 1.065 1.62 2.274 2.78 2.226 1.112-.046 1.53-.721 2.878-.721 1.346 0 1.721.721 2.882.699 1.191-.023 1.94-1.064 2.663-2.131.726-1.069 1.025-2.1 1.044-2.154-.02-.01-2.313-.885-2.336-3.9Zm-2.247-6.544c.61-.745 1.018-1.777.909-2.817-.889.039-1.953.589-2.586 1.333-.567.661-1.065 1.736-.93 2.714.982.076 1.976-.499 2.607-1.23Z"/></svg>
+       <span class="label">Download for macOS</span>
+       <span class="res-noise" aria-hidden="true"><i style="--bar:9px;--delay:-0.1s"></i><i style="--bar:16px;--delay:-0.35s"></i><i style="--bar:24px;--delay:-0.5s"></i><i style="--bar:14px;--delay:-0.23s"></i><i style="--bar:8px;--delay:-0.62s"></i></span>
+     </span>
+   </a>
     <p class="download-note">macOS 14.2+</p>
   </div>
   <div class="hero-preview reveal"><div class="app-preview" role="group" aria-label="Fade Out mixer interface preview">
@@ -610,6 +661,21 @@ html.js .reveal.is-visible {opacity:1;transform:translateY(0)}
       toggle.setAttribute('aria-label',active?'Show list mixer':'Show vertical faders');
     });
   });
+  // Keep the CTA working without APIs: open the public releases page as a fallback.
+  // Once GitHub publishes a release with a DMG, use its direct asset URL automatically.
+  const downloadLink=document.querySelector('.download-button.resonance');
+  if(downloadLink){
+    fetch('https://api.github.com/repos/Leon-Bishop/fade-out/releases/latest', {headers:{Accept:'application/vnd.github+json'}})
+      .then(response=>{if(!response.ok)throw new Error('Release unavailable');return response.json();})
+      .then(release=>{
+        const dmg=(release.assets||[]).find(asset=>/\\.dmg$/i.test(asset.name) && asset.browser_download_url);
+        if(dmg){
+          downloadLink.href=dmg.browser_download_url;
+          downloadLink.setAttribute('aria-label','Download Fade Out DMG for macOS');
+          downloadLink.title='Download '+dmg.name;
+        }
+      }).catch(()=>{});
+  }
   const reveals=[...document.querySelectorAll('.reveal')];
   if(!('IntersectionObserver' in window)||window.matchMedia('(prefers-reduced-motion: reduce)').matches){reveals.forEach(el=>el.classList.add('is-visible'));}
   else {const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target);}})},{threshold:0.08,rootMargin:'0px 0px 60px 0px'});reveals.forEach(el=>observer.observe(el));}
