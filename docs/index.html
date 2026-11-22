@@ -133,6 +133,26 @@ html[data-theme="light"] .download-button.resonance {
 }
 .resonance:active {transform:scale(.98)}
 @keyframes resonance-dance {to{transform:scaleY(1.85)}}
+/* Phones and touch tablets have no hover. Bring the sound-wave bars to life
+   automatically, without requiring a tap or long press. */
+@media (hover:none), (pointer:coarse) {
+  .resonance .res-noise i {
+    animation:resonance-dance 1.05s ease-in-out var(--delay) infinite alternate;
+    will-change:transform;
+  }
+  .resonance .res-core {
+    animation:resonance-breathe 4.8s ease-in-out infinite alternate;
+  }
+  .resonance:active .res-core {
+    transform:rotate(0deg) scale(.985);
+    background:var(--res-hover);
+  }
+  .resonance:active .res-core>* {transform:rotate(0deg)}
+}
+@keyframes resonance-breathe {
+  from {transform:rotate(-1.1deg) scale(1)}
+  to {transform:rotate(-.65deg) scale(1.012)}
+}
 @media(max-width:450px) {
   .download-button.resonance {height:70px;font-size:clamp(12.5px,4vw,17px);max-width:350px}
   .resonance .res-core {gap:8px;padding:0 10px}
@@ -141,7 +161,7 @@ html[data-theme="light"] .download-button.resonance {
   .resonance .res-noise i {width:1.5px}
 }
 @media(prefers-reduced-motion:reduce) {
-  .download-button.resonance,.resonance .res-core,.resonance .res-core>* {animation:none!important;transition:none!important}
+  .download-button.resonance,.resonance .res-core,.resonance .res-core>*,.resonance .res-noise i {animation:none!important;transition:none!important}
   .resonance:is(:hover,:focus-visible),.resonance:active {transform:none}
   .resonance:is(:hover,:focus-visible) .res-core {transform:rotate(-1.1deg)}
   .resonance:is(:hover,:focus-visible) .res-core>* {transform:rotate(1.1deg)}
