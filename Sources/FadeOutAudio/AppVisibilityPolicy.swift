@@ -29,10 +29,11 @@ public enum AppVisibilityPolicy {
         "system information"
     ]
 
-    /// HAL registration alone does not make an app a meaningful mixer source. This policy stays
-    /// narrow so paused media, browsers, calls, games, and unfamiliar audio apps remain visible.
+    /// Music, browsers, communication, games, and media stay available while paused. General
+    /// applications such as Mail are transient and appear only while Core Audio reports output.
     public static func shouldShow(bundleID: String, name: String,
-                                  categoryIdentifier: String?) -> Bool {
+                                  categoryIdentifier: String?,
+                                  isActivelyProducingSound: Bool = true) -> Bool {
         let bundle = bundleID.lowercased()
         let normalizedName = name.lowercased()
         let category = categoryIdentifier?.lowercased() ?? ""
@@ -41,6 +42,13 @@ public enum AppVisibilityPolicy {
         if bundle.hasPrefix("com.apple.dt.") { return false }
         if category.contains("developer-tools") { return false }
         if excludedNameMarkers.contains(where: normalizedName.contains) { return false }
-        return true
+
+        if AppSortPriority.classify(bundleID: bundleID, name: name,
+                                    categoryIdentifier: categoryIdentifier) != .other {
+            return true
+        }
+        let persistentCategories = ["games", "video", "entertainment", "music", "audio"]
+        if persistentCategories.contains(where: category.contains) { return true }
+        return isActivelyProducingSound
     }
 }

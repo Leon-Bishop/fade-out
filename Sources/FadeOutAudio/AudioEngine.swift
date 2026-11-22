@@ -7,11 +7,14 @@ public struct AudioProcess: Identifiable, Equatable {
     public let id: AudioObjectID
     public let pid: pid_t
     public let bundleID: String
+    public let isRunningOutput: Bool
 
-    public init(id: AudioObjectID, pid: pid_t, bundleID: String) {
+    public init(id: AudioObjectID, pid: pid_t, bundleID: String,
+                isRunningOutput: Bool = false) {
         self.id = id
         self.pid = pid
         self.bundleID = bundleID
+        self.isRunningOutput = isRunningOutput
     }
 }
 
@@ -188,7 +191,10 @@ public enum AudioHardwareSnapshot {
             // Some browser and media helper processes don't publish a HAL bundle ID. The PID still
             // identifies their NSRunningApplication, so retain them and resolve the owning app in UI state.
             let bundle = (try? HAL.string(id, kAudioProcessPropertyBundleID)) ?? ""
-            return AudioProcess(id: id, pid: pid, bundleID: bundle)
+            let runningValue = (try? HAL.scalar(id, kAudioProcessPropertyIsRunningOutput,
+                                                as: UInt32.self)) ?? 0
+            return AudioProcess(id: id, pid: pid, bundleID: bundle,
+                                isRunningOutput: runningValue != 0)
         } ?? []
     }
 

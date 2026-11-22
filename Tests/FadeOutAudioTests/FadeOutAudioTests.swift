@@ -65,12 +65,23 @@ struct FadeOutAudioTests {
             categoryIdentifier: "public.app-category.developer-tools"))
         #expect(AppVisibilityPolicy.shouldShow(
             bundleID: "com.spotify.client", name: "Spotify",
-            categoryIdentifier: "public.app-category.music"))
+            categoryIdentifier: "public.app-category.music",
+            isActivelyProducingSound: false))
         #expect(AppVisibilityPolicy.shouldShow(
             bundleID: "com.apple.Safari", name: "Safari",
-            categoryIdentifier: "public.app-category.productivity"))
+            categoryIdentifier: "public.app-category.productivity",
+            isActivelyProducingSound: false))
         #expect(AppVisibilityPolicy.shouldShow(
             bundleID: "com.hnc.Discord", name: "Discord",
-            categoryIdentifier: "public.app-category.social-networking"))
+            categoryIdentifier: "public.app-category.social-networking",
+            isActivelyProducingSound: false))
+        #expect(!AppVisibilityPolicy.shouldShow(
+            bundleID: "com.apple.mail", name: "Mail",
+            categoryIdentifier: "public.app-category.productivity",
+            isActivelyProducingSound: false))
+        #expect(AppVisibilityPolicy.shouldShow(
+            bundleID: "com.apple.mail", name: "Mail",
+            categoryIdentifier: "public.app-category.productivity",
+            isActivelyProducingSound: true))
     }
 }

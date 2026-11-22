@@ -114,7 +114,8 @@ final class MixerModel: ObservableObject {
             let category = identity.app.flatMap(appCategoryIdentifier(for:))
             guard AppVisibilityPolicy.shouldShow(bundleID: identity.bundleID,
                                                    name: identity.name,
-                                                   categoryIdentifier: category) else { continue }
+                                                   categoryIdentifier: category,
+                                                   isActivelyProducingSound: process.isRunningOutput) else { continue }
             visible[identity.bundleID] = AppRow(
                 id: identity.bundleID,
                 bundleID: identity.bundleID,

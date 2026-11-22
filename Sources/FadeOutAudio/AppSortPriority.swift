@@ -43,6 +43,6 @@ public enum AppSortPriority: Int, Comparable, Sendable {
     private static let communicationMarkers = [
         "discord", "slack", "microsoft teams", "com.microsoft.teams", "zoom", "facetime",
         "skype", "telegram", "whatsapp", "signal", "webex", "guilded", "element",
-        "mumble", "teamspeak", "messenger"
+        "mumble", "teamspeak", "messenger", "chatgpt", "com.openai"
     ]
 }

@@ -13,6 +13,7 @@ public final class AppMonitor {
     }
     private var registrations: [Registration] = []
     private var watchedProcesses: Set<AudioObjectID> = []
+    private var outputStateTimer: DispatchSourceTimer?
     private let listenerQueue = DispatchQueue(label: "com.howldev.fadeout.monitor")
 
     public init() {}
@@ -22,6 +23,12 @@ public final class AppMonitor {
         listen(on: HAL.system, for: kAudioHardwarePropertyProcessObjectList)
         listen(on: HAL.system, for: kAudioHardwarePropertyDevices)
         listen(on: HAL.system, for: kAudioHardwarePropertyDefaultOutputDevice)
+        let timer = DispatchSource.makeTimerSource(queue: .main)
+        timer.schedule(deadline: .now() + .milliseconds(500),
+                       repeating: .milliseconds(500), leeway: .milliseconds(100))
+        timer.setEventHandler { [weak self] in self?.refresh() }
+        timer.resume()
+        outputStateTimer = timer
         refresh()
     }
 
@@ -32,6 +39,8 @@ public final class AppMonitor {
         }
         registrations.removeAll()
         watchedProcesses.removeAll()
+        outputStateTimer?.cancel()
+        outputStateTimer = nil
     }
 
     private func listen(on object: AudioObjectID, for selector: AudioObjectPropertySelector) {
