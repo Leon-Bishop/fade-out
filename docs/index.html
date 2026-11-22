@@ -90,50 +90,61 @@ h1,h2,h3,p {margin-top:0}
 h1,h2,h3 {font-family:'Fraunces',Georgia,serif;color:var(--ink)}
 h1 {font-size:clamp(64px,7vw,91px);font-weight:600;line-height:1.05;letter-spacing:-.075em;margin:0}
 .hero-tagline {font:italic clamp(30px,3.75vw,46px)/1.15 'Fraunces',Georgia,serif;color:var(--ink);text-align:right;margin:3px 20px 36px 0}
-/* Resonance: a wave-emitting, asymmetrical download CTA. */
-.download-button.resonance {position:relative;display:flex;align-items:center;justify-content:center;
-  width:min(100%,420px);height:135px;min-height:0;padding:0;margin:0;
-  color:#eaf3df;background:transparent;border:0;border-radius:0;text-decoration:none;
+/* Resonance: a compact, asymmetrical, sound-inspired download button.
+   Forest in light mode, cream in dark mode; no surrounding ripple rings. */
+.download-button.resonance {
+  --res-bg:#f4f1e8;--res-fg:#0b4130;--res-hover:#fffdf5;
+  --res-border:rgba(18,65,47,.42);--res-bars:#2d7654;
+  position:relative;display:inline-flex;align-items:center;justify-content:center;
+  width:min(100%,354px);height:77px;min-height:0;padding:0;margin:8px 0 6px;
+  color:var(--res-fg);background:transparent;border:0;text-decoration:none;
   font:700 clamp(14px,2.2vw,19px)/1.15 'DM Sans',system-ui,sans-serif;
-  isolation:isolate;touch-action:manipulation;outline-offset:5px;-webkit-tap-highlight-color:transparent;
-  transition:transform .3s cubic-bezier(.18,.9,.3,1)}
-.resonance .resonance-rings {position:absolute;inset:0;width:100%;height:100%;z-index:-2;overflow:visible;pointer-events:none}
-.resonance .resonance-rings path {fill:none;stroke:#b5dfb5;stroke-width:1.5;opacity:.4;
-  transform-origin:center;transition:opacity .45s,transform .65s cubic-bezier(.2,.8,.3,1)}
-.resonance .resonance-rings path:nth-child(2){opacity:.28}
-.resonance .resonance-rings path:nth-child(3){opacity:.19}
-.resonance .res-core {position:relative;display:flex;align-items:center;justify-content:center;gap:12px;
-  width:82%;height:77px;padding:0 12px;background:#0a4836;border:1px solid rgba(219,247,208,.62);
+  isolation:isolate;touch-action:manipulation;outline-offset:5px;
+  -webkit-tap-highlight-color:transparent;transition:transform .34s cubic-bezier(.18,.9,.3,1);
+}
+html[data-theme="light"] .download-button.resonance {
+  --res-bg:#0a4836;--res-fg:#f5f3e9;--res-hover:#146049;
+  --res-border:rgba(222,245,213,.57);--res-bars:#bfe1ab;
+}
+.resonance .res-core {
+  position:relative;display:flex;align-items:center;justify-content:center;gap:12px;
+  width:100%;height:100%;padding:0 15px;color:var(--res-fg);background:var(--res-bg);
+  border:1px solid var(--res-border);
   border-radius:24px 17px 27px 19px/20px 28px 18px 26px;
-  box-shadow:0 12px 26px rgba(0,21,12,.25),inset 0 1px 0 rgba(250,255,247,.2);
-  transform:rotate(-1.3deg);transition:transform .45s,border-radius .55s,background .3s}
-.resonance .res-core>* {transform:rotate(1.3deg)}
+  box-shadow:0 12px 24px rgba(0,21,12,.19),inset 0 1px 0 rgba(255,255,255,.12);
+  transform:rotate(-1.1deg);
+  transition:transform .4s cubic-bezier(.2,.85,.3,1),border-radius .5s,
+    background-color .35s ease,color .35s ease,border-color .35s ease,box-shadow .35s ease;
+}
+.resonance .res-core>* {transform:rotate(1.1deg);transition:transform .4s cubic-bezier(.2,.85,.3,1)}
 .resonance .apple {display:block;flex:none;width:23px;height:23px;fill:currentColor}
 .resonance .label {white-space:nowrap;letter-spacing:-.03em}
-.resonance .res-noise {display:flex;align-items:center;gap:2px;color:#bfe1ab;flex:none}
+.resonance .res-noise {display:flex;align-items:center;gap:2px;flex:none;color:var(--res-bars)}
 .resonance .res-noise i {display:block;width:2px;height:var(--bar);background:currentColor;border-radius:5px}
-.resonance:is(:hover,:focus-visible) .res-core {transform:rotate(0deg) scale(1.018);
-  border-radius:19px 27px 17px 28px/29px 18px 27px 18px;background:#116046}
-.resonance:is(:hover,:focus-visible) .res-core>* {transform:rotate(0deg)}
-.resonance:is(:hover,:focus-visible) .resonance-rings path:nth-child(1){transform:scale(1.045,1.1);opacity:.9}
-.resonance:is(:hover,:focus-visible) .resonance-rings path:nth-child(2){transform:scale(1.1,1.18);opacity:.65}
-.resonance:is(:hover,:focus-visible) .resonance-rings path:nth-child(3){transform:scale(1.16,1.25);opacity:.38}
-.resonance:is(:hover,:focus-visible) .res-noise i {animation:resonance-dance .58s ease-in-out var(--delay) infinite alternate}
-.resonance:active {transform:scale(.975)}
+.resonance:is(:hover,:focus-visible) {transform:translateY(-2px)}
+.resonance:is(:hover,:focus-visible) .res-core {
+  transform:rotate(0deg) scale(1.018);
+  border-radius:19px 27px 17px 28px/29px 18px 27px 18px;
+  background:var(--res-hover);box-shadow:0 16px 26px rgba(0,21,12,.23);
+}
+.resonance:is(:hover,:focus-visible) .res-core>* {transform:rotate(0)}
+.resonance:is(:hover,:focus-visible) .res-noise i {
+  animation:resonance-dance .58s ease-in-out var(--delay) infinite alternate;
+}
+.resonance:active {transform:scale(.98)}
 @keyframes resonance-dance {to{transform:scaleY(1.85)}}
 @media(max-width:450px) {
- .download-button.resonance {height:115px;font-size:clamp(12.5px,4vw,17px)}
- .resonance .res-core {height:70px;width:91%;gap:7px;padding:0 8px}
- .resonance .apple {width:20px;height:20px}
- .resonance .res-noise {gap:1px}
- .resonance .res-noise i {width:1.5px}
+  .download-button.resonance {height:70px;font-size:clamp(12.5px,4vw,17px);max-width:350px}
+  .resonance .res-core {gap:8px;padding:0 10px}
+  .resonance .apple {width:20px;height:20px}
+  .resonance .res-noise {gap:1px}
+  .resonance .res-noise i {width:1.5px}
 }
 @media(prefers-reduced-motion:reduce) {
- .download-button.resonance,.resonance .res-core,.resonance .res-core>*,
- .resonance .resonance-rings path {animation:none!important;transition:none!important}
- .resonance:is(:hover,:focus-visible),.resonance:active {transform:none}
- .resonance:is(:hover,:focus-visible) .res-core {transform:rotate(-1.3deg)}
- .resonance:is(:hover,:focus-visible) .res-core>* {transform:rotate(1.3deg)}
+  .download-button.resonance,.resonance .res-core,.resonance .res-core>* {animation:none!important;transition:none!important}
+  .resonance:is(:hover,:focus-visible),.resonance:active {transform:none}
+  .resonance:is(:hover,:focus-visible) .res-core {transform:rotate(-1.1deg)}
+  .resonance:is(:hover,:focus-visible) .res-core>* {transform:rotate(1.1deg)}
 }
 .download-note {font-size:11px;letter-spacing:.025em;color:var(--soft);margin:9px 0 0 8px}
 .hero-preview {display:flex;justify-content:center;align-items:center;min-width:0}
@@ -188,21 +199,17 @@ h1 {font-size:clamp(64px,7vw,91px);font-weight:600;line-height:1.05;letter-spaci
 .fader-scroll::-webkit-scrollbar {height:5px}
 .fader-scroll::-webkit-scrollbar-track {background:rgba(69,118,92,.14);border-radius:8px}
 .fader-scroll::-webkit-scrollbar-thumb {background:#668e77;border-radius:8px}
-.fader-track {display:flex;min-width:max-content;align-items:stretch;padding:0 1px}
-.fader-channel {width:53px;flex:0 0 53px;display:flex;flex-direction:column;align-items:center;text-align:center;border-right:1px solid rgba(26,73,47,.09);padding:0 1px 1px;color:#14362b}
+.fader-track {display:flex;min-width:100%;width:max-content;align-items:stretch;padding:0 1px}
+.fader-channel {width:auto;flex:1 0 53px;display:flex;flex-direction:column;align-items:center;text-align:center;border-right:1px solid rgba(26,73,47,.09);padding:0 1px 1px;color:#14362b}
 .fader-channel:last-child {border-right:0}
 .fader-channel-icon {height:19px;width:19px;border-radius:5px;object-fit:cover;flex:none;margin:0 auto}
 .fader-master-icon {display:grid;place-items:center;background:#dbe8d3;color:#204734;font-size:10px;font-weight:800}
-.fader-mail-icon {display:grid;place-items:center;background:linear-gradient(145deg,#54bbff,#1776e7);color:#fff}
-.fader-mail-icon svg {width:15px;height:15px}
 .fader-rail {width:24px;height:185px;position:relative;flex:none;margin:5px auto 2px}
 .fader-range {--fill:50%;appearance:none;-webkit-appearance:none;position:absolute;top:90.5px;left:-80.5px;width:185px;height:4px;border:0;border-radius:20px;padding:0;transform:rotate(-90deg);background:linear-gradient(to right,#104f38 var(--fill),#dfe4d9 var(--fill));cursor:pointer}
 .fader-range::-webkit-slider-thumb {-webkit-appearance:none;appearance:none;width:15px;height:15px;background:#fff;border:0;border-radius:50%;box-shadow:0 1px 5px rgba(0,0,0,.17)}
 .fader-range::-moz-range-thumb {width:15px;height:15px;background:#fff;border:0;border-radius:50%;box-shadow:0 1px 5px rgba(0,0,0,.17)}
 .fader-number {font-size:9px;font-weight:700;color:#1c4937;line-height:1.25;font-variant-numeric:tabular-nums}
 .fader-name {display:block;font-size:9px;line-height:1.25;color:#18362a;margin-top:2px;white-space:nowrap}
-.fader-scroll-hint {height:4px;background:rgba(54,100,70,.16);border-radius:999px;margin-top:4px;overflow:hidden}
-.fader-scroll-hint span {display:block;width:93%;height:100%;background:#557e69;border-radius:999px}
 /* Section headings */
 .content-section {position:relative}
 .section-heading {display:flex;align-items:center;justify-content:center;gap:42px;margin:5px 0 29px;text-align:center}
@@ -432,11 +439,6 @@ html.js .reveal.is-visible {opacity:1;transform:translateY(0)}
   <div class="hero-copy reveal"><div class="hero-heading"><span class="hero-app-icon"><svg viewBox="0 0 40 40" aria-hidden="true" focusable="false" fill="currentColor"><rect x="3" y="16" width="5" height="9" rx="2.5"/><rect x="11" y="9" width="5" height="23" rx="2.5"/><rect x="19" y="3" width="5" height="35" rx="2.5"/><rect x="27" y="10" width="5" height="21" rx="2.5"/><rect x="35" y="17" width="4" height="8" rx="2"/></svg></span><h1 id="hero-title">fade out</h1></div>
     <p class="hero-tagline">the noise</p>
     <a class="download-button resonance" href="https://github.com/Leon-Bishop/fade-out/releases" aria-label="Find the Fade Out macOS download on GitHub Releases" title="The DMG will download directly once its release is published">
-     <svg class="resonance-rings" viewBox="0 0 430 136" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-       <path d="M50 50 C93 4 129 40 182 22 S300 11 340 31 S404 51 386 88 S293 128 236 112 S125 123 74 103 S34 68 50 50Z"/>
-       <path d="M32 52 C81 -1 128 25 181 12 S302 1 354 22 S426 52 402 99 S304 137 236 126 S125 132 64 115 S11 78 32 52Z"/>
-       <path d="M15 48 C74 -15 124 14 183 3 S317 -12 365 14 S445 57 414 111 S304 153 232 136 S118 146 48 124 S-12 76 15 48Z"/>
-     </svg>
      <span class="res-core">
        <svg class="apple" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17.564 12.894c-.021-2.23 1.82-3.31 1.904-3.364-1.042-1.525-2.664-1.735-3.235-1.753-1.357-.143-2.674.793-3.362.793-.688 0-1.752-.78-2.883-.755-1.484.024-2.877.863-3.634 2.19-1.55 2.69-.395 6.681 1.109 8.87.74 1.065 1.62 2.274 2.78 2.226 1.112-.046 1.53-.721 2.878-.721 1.346 0 1.721.721 2.882.699 1.191-.023 1.94-1.064 2.663-2.131.726-1.069 1.025-2.1 1.044-2.154-.02-.01-2.313-.885-2.336-3.9Zm-2.247-6.544c.61-.745 1.018-1.777.909-2.817-.889.039-1.953.589-2.586 1.333-.567.661-1.065 1.736-.93 2.714.982.076 1.976-.499 2.607-1.23Z"/></svg>
        <span class="label">Download for macOS</span>
@@ -593,8 +595,7 @@ html.js .reveal.is-visible {opacity:1;transform:translateY(0)}
     const rows=[...preview.querySelectorAll('.app-row')];
     const specs=[
       {name:'master',row:preview.querySelector('.master-row'),value:51},
-      ...rows.map(row=>({name:row.querySelector('.app-details span').textContent.trim(),row})),
-      {name:'Mail',row:null,value:87}
+      ...rows.map(row=>({name:row.querySelector('.app-details span').textContent.trim(),row}))
     ];
     specs.forEach(spec=>{
       const source=spec.row?.querySelector('input[type="range"]');
@@ -605,10 +606,6 @@ html.js .reveal.is-visible {opacity:1;transform:translateY(0)}
         icon=document.createElement('span');
         icon.className='fader-channel-icon fader-master-icon';
         icon.textContent='M';
-      }else if(spec.name==='Mail'){
-        icon=document.createElement('span');
-        icon.className='fader-channel-icon fader-mail-icon';
-        icon.innerHTML='<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2.5" y="5" width="15" height="10" rx="2"/><path d="m3.2 6 6.8 5 6.8-5"/></svg>';
       }else {
         icon=spec.row.querySelector('.service-icon').cloneNode(true);
         icon.className='fader-channel-icon';
@@ -648,11 +645,6 @@ html.js .reveal.is-visible {opacity:1;transform:translateY(0)}
     });
     scroll.append(track);
     panel.append(scroll);
-    const hint=document.createElement('div');
-    hint.className='fader-scroll-hint';
-    hint.setAttribute('aria-hidden','true');
-    hint.innerHTML='<span></span>';
-    panel.append(hint);
     preview.querySelector('.app-heading').insertAdjacentElement('afterend',panel);
     toggle.addEventListener('click',()=>{
       const active=preview.dataset.layout!=='faders';
