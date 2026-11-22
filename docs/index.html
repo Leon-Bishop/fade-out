@@ -89,14 +89,14 @@ html[data-theme="light"] .theme-toggle .show-in-light {display:block}
 h1,h2,h3,p {margin-top:0}
 h1,h2,h3 {font-family:'Fraunces',Georgia,serif;color:var(--ink)}
 h1 {font-size:clamp(64px,7vw,91px);font-weight:600;line-height:1.05;letter-spacing:-.075em;margin:0}
-.hero-tagline {font:italic clamp(30px,3.75vw,46px)/1.15 'Fraunces',Georgia,serif;color:var(--ink);text-align:right;margin:3px 20px 36px 0}
+.hero-tagline {font:italic clamp(30px,3.75vw,46px)/1.15 'Fraunces',Georgia,serif;color:var(--ink);text-align:right;margin:3px 20px 17px 0}
 /* Resonance: a compact, asymmetrical, sound-inspired download button.
    Forest in light mode, cream in dark mode; no surrounding ripple rings. */
 .download-button.resonance {
   --res-bg:#f4f1e8;--res-fg:#0b4130;--res-hover:#fffdf5;
   --res-border:rgba(18,65,47,.42);--res-bars:#2d7654;
   position:relative;display:inline-flex;align-items:center;justify-content:center;
-  width:min(100%,354px);height:77px;min-height:0;padding:0;margin:8px 0 6px;
+  width:min(100%,354px);height:77px;min-height:0;padding:0;margin:0;
   color:var(--res-fg);background:transparent;border:0;text-decoration:none;
   font:700 clamp(14px,2.2vw,19px)/1.15 'DM Sans',system-ui,sans-serif;
   isolation:isolate;touch-action:manipulation;outline-offset:5px;
@@ -170,7 +170,7 @@ html[data-theme="light"] .download-button.resonance {
   .resonance:is(:hover,:focus-visible) .res-core {transform:none}
   .resonance:is(:hover,:focus-visible) .res-core>* {transform:none}
 }
-.download-note {font-size:11px;letter-spacing:.025em;color:var(--soft);margin:9px 0 0 8px}
+.download-note {font-size:11px;letter-spacing:.025em;color:var(--soft);margin:4px 0 0 8px}
 .hero-preview {display:flex;flex-direction:column;justify-content:center;align-items:center;gap:13px;min-width:0}
 .preview-heading {font:600 clamp(20px,2.2vw,25px)/1.2 'Fraunces',Georgia,serif;letter-spacing:-.03em;color:var(--ink);margin:0;text-align:center}
 /* Interface previews based on the provided real mixer screenshot. Preview controls are illustrative. */
@@ -288,7 +288,9 @@ html.js .reveal.is-visible {opacity:1;transform:translateY(0)}
   .hero-copy {width:min(100%,465px);margin-inline:auto}
   .hero-heading {gap:13px}
   h1 {font-size:clamp(57px,11vw,77px)}
-  .hero-tagline {font-size:clamp(29px,6.4vw,39px);margin:4px 15px 27px 0}
+  .hero-tagline {font-size:clamp(29px,6.4vw,39px);margin:4px 15px 13px 0}
+  .hero-copy .download-button.resonance {display:flex;width:100%;max-width:none;margin:0 auto}
+  .hero-copy .download-note {margin:5px 0 0;text-align:center}
   .hero-app-icon {width:67px;height:67px;flex-basis:67px}
   .hero-preview {justify-content:center}
   .app-preview {width: min(100%,354px)}
