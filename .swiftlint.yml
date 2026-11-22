@@ -1,0 +1,12 @@
+included:
+  - Sources
+  - Tests
+disabled_rules:
+  - line_length
+  - file_length
+  - function_body_length
+  - type_body_length
+  - nesting
+  - identifier_name
+  - trailing_comma
+  - opening_brace

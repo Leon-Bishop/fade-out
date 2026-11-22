@@ -25,6 +25,7 @@ struct MixerView: View {
         .frame(minHeight: isHorizontal ? nil : 455)
         .foregroundStyle(ink)
         .preferredColorScheme(.light)
+        .environment(\.controlActiveState, .active)
         .animation(.easeInOut(duration: 0.22), value: layoutStyle)
         .alert("About Fade Out", isPresented: $showingAbout) {
             Button("Done") {}
@@ -38,7 +39,6 @@ struct MixerView: View {
             header
             masterCard
             appsCard
-            if !model.captureAcknowledged && !model.rows.isEmpty { permissionCard }
             if let error = model.errorMessage { errorBanner(error) }
             footer
         }
@@ -329,21 +329,6 @@ struct MixerView: View {
         .overlay(alignment: .bottom) { Rectangle().fill(violet.opacity(0.08)).frame(height: 1) }
         .animation(.easeOut(duration: 0.14), value: hoveredAppID)
         .onHover { hovering in hoveredAppID = hovering ? row.id : nil }
-    }
-
-    private var permissionCard: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
-                Image(systemName: "waveform.badge.shield").foregroundStyle(violet)
-                Text("Allow audio mixing").font(.system(size: 12.5, weight: .semibold, design: .rounded))
-            }
-            Text("Fade Out needs System Audio Recording access to adjust sound. Audio stays on this Mac.")
-                .font(.system(size: 11)).foregroundStyle(mutedInk).fixedSize(horizontal: false, vertical: true)
-            Button("Continue") { model.acknowledgeCapture() }
-                .buttonStyle(.borderedProminent).tint(violet).controlSize(.small)
-        }
-        .padding(13)
-        .glassCard()
     }
 
     private func errorBanner(_ error: String) -> some View {

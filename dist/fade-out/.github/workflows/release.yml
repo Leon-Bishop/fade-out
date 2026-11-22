@@ -1,0 +1,40 @@
+name: Release build
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  universal-app:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test
+        run: swift test
+      - name: Test buffer layouts
+        run: sh scripts/test_dsp.sh
+      - name: Build universal app
+        run: |
+          xcodebuild -project FadeOut.xcodeproj -scheme "FadeOut App" -configuration Release \
+            -derivedDataPath DerivedData ARCHS="arm64 x86_64" ONLY_ACTIVE_ARCH=NO \
+            CODE_SIGNING_ALLOWED=NO build
+          lipo -archs DerivedData/Build/Products/Release/FadeOut.app/Contents/MacOS/FadeOut
+          ditto -c -k --sequesterRsrc --keepParent \
+            DerivedData/Build/Products/Release/FadeOut.app FadeOut.app.zip
+          pkgbuild --component DerivedData/Build/Products/Release/FadeOut.app \
+            --install-location /Applications --identifier com.howldev.fadeout.pkg \
+            --version "${GITHUB_REF_NAME#v}" FadeOut-unsigned-universal.pkg
+      - name: Upload unsigned build
+        uses: actions/upload-artifact@v4
+        with:
+          name: FadeOut-unsigned-universal
+          path: |
+            FadeOut.app.zip
+            FadeOut-unsigned-universal.pkg
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" FadeOut.app.zip FadeOut-unsigned-universal.pkg --draft --title "$GITHUB_REF_NAME" --notes "Unsigned universal build. Sign and notarize before public distribution."

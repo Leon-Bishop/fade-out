@@ -21,7 +21,6 @@ final class MixerModel: ObservableObject {
     @Published private(set) var devices: [OutputDevice] = []
     @Published var masterVolume: Double
     @Published var selectedOutputUID: String
-    @Published var captureAcknowledged: Bool
     @Published var launchAtLogin = false
     @Published var errorMessage: String?
 
@@ -48,11 +47,9 @@ final class MixerModel: ObservableObject {
         selectedOutputUID = ""
         followsSystemOutput = true
         settings.outputDeviceUID = nil
-        captureAcknowledged = UserDefaults(suiteName: "com.howldev.fadeout")?.bool(forKey: "captureExplained") ?? false
         launchAtLogin = SMAppService.mainApp.status == .enabled
         if let previewRows {
             rows = previewRows
-            captureAcknowledged = true
             return
         }
         monitor.onChange = { [weak self] processes, devices, defaultID in
@@ -113,8 +110,11 @@ final class MixerModel: ObservableObject {
 
         var visible: [String: AppRow] = [:]
         for process in observedProcesses {
-            guard let identity = canonicalIdentity(for: process, among: runningApps),
-                  !isExcludedFromMixer(identity.bundleID) else { continue }
+            guard let identity = canonicalIdentity(for: process, among: runningApps) else { continue }
+            let category = identity.app.flatMap(appCategoryIdentifier(for:))
+            guard AppVisibilityPolicy.shouldShow(bundleID: identity.bundleID,
+                                                   name: identity.name,
+                                                   categoryIdentifier: category) else { continue }
             visible[identity.bundleID] = AppRow(
                 id: identity.bundleID,
                 bundleID: identity.bundleID,
@@ -123,7 +123,7 @@ final class MixerModel: ObservableObject {
                 sortPriority: AppSortPriority.classify(
                     bundleID: identity.bundleID,
                     name: identity.name,
-                    categoryIdentifier: identity.app.flatMap(appCategoryIdentifier(for:))
+                    categoryIdentifier: category
                 ),
                 volume: settings.volume(for: identity.bundleID)
             )
@@ -199,15 +199,6 @@ final class MixerModel: ObservableObject {
         return nil
     }
 
-    private func isExcludedFromMixer(_ bundleID: String) -> Bool {
-        let excluded: Set<String> = [
-            "com.apple.finder",
-            "com.apple.ActivityMonitor",
-            "com.howldev.fadeout"
-        ]
-        return excluded.contains(bundleID)
-    }
-
     private func appCategoryIdentifier(for app: NSRunningApplication) -> String? {
         guard let url = app.bundleURL, let bundle = Bundle(url: url) else { return nil }
         return bundle.object(forInfoDictionaryKey: "LSApplicationCategoryType") as? String
@@ -237,13 +228,6 @@ final class MixerModel: ObservableObject {
         return Bundle(path: bundlePath)?.bundleIdentifier
     }
 
-    func acknowledgeCapture() {
-        captureAcknowledged = true
-        UserDefaults(suiteName: "com.howldev.fadeout")?.set(true, forKey: "captureExplained")
-        requestCaptureAccessIfNeeded()
-        syncAudio()
-    }
-
     func setMaster(_ value: Double) {
         masterVolume = value
         settings.masterVolume = value
@@ -269,10 +253,6 @@ final class MixerModel: ObservableObject {
 
     private func beginCaptureIfNeeded(for value: Double) {
         guard value < 0.999 else { return }
-        if !captureAcknowledged {
-            captureAcknowledged = true
-            UserDefaults(suiteName: "com.howldev.fadeout")?.set(true, forKey: "captureExplained")
-        }
         requestCaptureAccessIfNeeded()
     }
 
@@ -319,7 +299,7 @@ final class MixerModel: ObservableObject {
     }
 
     private func syncAudio() {
-        guard captureAcknowledged, let output = devices.first(where: { $0.uid == selectedOutputUID }) else {
+        guard let output = devices.first(where: { $0.uid == selectedOutputUID }) else {
             engine.stopAll()
             return
         }

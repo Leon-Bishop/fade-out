@@ -1,0 +1,17 @@
+name: Build and test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test audio package
+        run: swift test
+      - name: Test buffer layouts
+        run: sh scripts/test_dsp.sh
+      - name: Build app
+        run: xcodebuild -project FadeOut.xcodeproj -scheme "FadeOut App" -configuration Debug CODE_SIGNING_ALLOWED=NO build

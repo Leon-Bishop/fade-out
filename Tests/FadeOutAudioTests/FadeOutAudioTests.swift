@@ -52,4 +52,25 @@ struct FadeOutAudioTests {
         #expect(AppSortPriority.browser < .communication)
         #expect(AppSortPriority.communication < .other)
     }
+
+    @Test func visibilityExcludesNonAudioUtilitiesButKeepsSilentCapableApps() {
+        #expect(!AppVisibilityPolicy.shouldShow(
+            bundleID: "com.apple.Terminal", name: "Terminal",
+            categoryIdentifier: "public.app-category.utilities"))
+        #expect(!AppVisibilityPolicy.shouldShow(
+            bundleID: "com.apple.dt.Xcode", name: "Xcode",
+            categoryIdentifier: "public.app-category.developer-tools"))
+        #expect(!AppVisibilityPolicy.shouldShow(
+            bundleID: "com.github.Copilot", name: "GitHub Copilot",
+            categoryIdentifier: "public.app-category.developer-tools"))
+        #expect(AppVisibilityPolicy.shouldShow(
+            bundleID: "com.spotify.client", name: "Spotify",
+            categoryIdentifier: "public.app-category.music"))
+        #expect(AppVisibilityPolicy.shouldShow(
+            bundleID: "com.apple.Safari", name: "Safari",
+            categoryIdentifier: "public.app-category.productivity"))
+        #expect(AppVisibilityPolicy.shouldShow(
+            bundleID: "com.hnc.Discord", name: "Discord",
+            categoryIdentifier: "public.app-category.social-networking"))
+    }
 }
