@@ -57,6 +57,8 @@ struct FadeOutAudioTests {
     @Test func musicDirectoryRecognizesDockAndMenuBarPlayers() {
         #expect(MusicAppDirectory.contains(bundleID: "com.kv.Aural", name: "Aural"))
         #expect(MusicAppDirectory.contains(bundleID: "com.spotify.client", name: "Spotify"))
+        #expect(!MusicAppDirectory.contains(
+            bundleID: "com.spotify.client.helper", name: "Spotify Networking"))
         #expect(MusicAppDirectory.contains(bundleID: "unknown.direct.build", name: "Plexamp"))
         #expect(!MusicAppDirectory.contains(bundleID: "com.apple.Terminal", name: "Terminal"))
         #expect(AppSortPriority.classify(bundleID: "unknown.direct.build", name: "Aural") == .music)

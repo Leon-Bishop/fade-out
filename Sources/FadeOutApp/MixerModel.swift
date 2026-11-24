@@ -139,6 +139,13 @@ final class MixerModel: ObservableObject {
             guard let bundleID = app.bundleIdentifier, visible[bundleID] == nil else { continue }
             let name = app.localizedName ?? bundleID
             let category = appCategoryIdentifier(for: app)
+            let normalizedIdentity = "\(bundleID) \(name)".lowercased()
+            let helperMarkers = [" helper", "networking", "renderer", "web content", "gpu process"]
+            guard !helperMarkers.contains(where: normalizedIdentity.contains) else { continue }
+            let normalizedCategory = category?.lowercased() ?? ""
+            let isKnownPlayer = MusicAppDirectory.contains(bundleID: bundleID, name: name)
+            let isMusicCategory = normalizedCategory.contains("music") || normalizedCategory.contains("audio")
+            guard isKnownPlayer || isMusicCategory else { continue }
             let priority = AppSortPriority.classify(bundleID: bundleID,
                                                     name: name,
                                                     categoryIdentifier: category)
@@ -184,7 +191,7 @@ final class MixerModel: ObservableObject {
         // before considering the helper's own exact bundle identifier.
         if let app = apps
             .filter({ candidate in
-                guard candidate.activationPolicy == .regular,
+                guard (candidate.activationPolicy == .regular || candidate.activationPolicy == .accessory),
                       let name = candidate.localizedName?.lowercased() else { return false }
                 return normalizedDirectName.hasPrefix(name + " ")
             })

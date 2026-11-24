@@ -8,8 +8,8 @@
     <key>CFBundleName</key><string>Fade Out</string>
     <key>CFBundleDisplayName</key><string>Fade Out</string>
     <key>CFBundlePackageType</key><string>APPL</string>
-    <key>CFBundleShortVersionString</key><string>1.0.3</string>
-    <key>CFBundleVersion</key><string>3</string>
+    <key>CFBundleShortVersionString</key><string>1.0.4</string>
+    <key>CFBundleVersion</key><string>4</string>
     <key>LSMinimumSystemVersion</key><string>14.2</string>
     <key>LSUIElement</key><true/>
     <key>NSAudioCaptureUsageDescription</key><string>Fade Out captures audio from apps you adjust so it can play them at your chosen volume.</string>

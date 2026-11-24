@@ -114,6 +114,15 @@ struct MixerView: View {
                     .zIndex(100)
             }
         }
+        .overlay(alignment: .bottomTrailing) {
+            if showingAbout && !isHorizontal {
+                aboutHelpCard
+                    .padding(.bottom, 39)
+                    .padding(.trailing, 43)
+                    .transition(.opacity.combined(with: .scale(scale: 0.97, anchor: .bottomTrailing)))
+                    .zIndex(102)
+            }
+        }
         .frame(width: 354)
         .frame(height: isHorizontal ? 190 : nil)
         .frame(minHeight: isHorizontal ? nil : 455)
@@ -121,11 +130,6 @@ struct MixerView: View {
         .preferredColorScheme(.light)
         .environment(\.controlActiveState, .active)
         .animation(.easeInOut(duration: 0.22), value: layoutStyle)
-        .alert("About Fade Out", isPresented: $showingAbout) {
-            Button("Done") {}
-        } message: {
-            Text("Fade out the noise.\n\nMade by Howl Dev")
-        }
     }
 
     private var verticalMixer: some View {
@@ -262,6 +266,44 @@ struct MixerView: View {
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(width: 218, alignment: .leading)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 9)
+        .background(
+            LinearGradient(
+                colors: [
+                    Color(red: 0.965, green: 0.968, blue: 0.91),
+                    Color(red: 0.90, green: 0.93, blue: 0.85)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            ),
+            in: RoundedRectangle(cornerRadius: 10, style: .continuous)
+        )
+        .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous)
+            .stroke(violet.opacity(0.20), lineWidth: 0.8))
+        .shadow(color: ink.opacity(0.14), radius: 12, y: 5)
+        .allowsHitTesting(false)
+    }
+
+    private var aboutHelpCard: some View {
+        HStack(alignment: .top, spacing: 8) {
+            Image(systemName: "info.circle.fill")
+                .font(.system(size: 11, weight: .semibold))
+                .foregroundStyle(violet)
+                .frame(width: 20, height: 20)
+                .background(violet.opacity(0.09),
+                            in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Fade Out")
+                    .font(.system(size: 11, weight: .semibold, design: .rounded))
+                    .foregroundStyle(ink)
+                Text("Fade out the noise.\nMade by Howl Dev")
+                    .font(.system(size: 10.5, weight: .medium, design: .rounded))
+                    .foregroundStyle(mutedInk)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .frame(width: 190, alignment: .leading)
         .padding(.horizontal, 10)
         .padding(.vertical, 9)
         .background(
@@ -702,44 +744,57 @@ struct MixerView: View {
     }
 
     private var footer: some View {
-        HStack {
-            Button { model.setLaunchAtLogin(!model.launchAtLogin) } label: {
-                HStack(spacing: 6) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 4, style: .continuous)
-                            .fill(model.launchAtLogin ? violet : .white.opacity(0.42))
-                        RoundedRectangle(cornerRadius: 4, style: .continuous)
-                            .stroke(model.launchAtLogin ? violet.opacity(0.72) : violet.opacity(0.28), lineWidth: 0.8)
-                        if model.launchAtLogin {
-                            Image(systemName: "checkmark")
-                                .font(.system(size: 8, weight: .bold))
-                                .foregroundStyle(.white)
+        ZStack {
+            Text("ck")
+                .font(.system(size: 9.5, weight: .semibold, design: .rounded))
+                .tracking(0.7)
+                .foregroundStyle(mutedInk.opacity(0.78))
+                .accessibilityLabel("ck")
+                .allowsHitTesting(false)
+
+            HStack {
+                Button { model.setLaunchAtLogin(!model.launchAtLogin) } label: {
+                    HStack(spacing: 6) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 4, style: .continuous)
+                                .fill(model.launchAtLogin ? violet : .white.opacity(0.42))
+                            RoundedRectangle(cornerRadius: 4, style: .continuous)
+                                .stroke(model.launchAtLogin ? violet.opacity(0.72) : violet.opacity(0.28), lineWidth: 0.8)
+                            if model.launchAtLogin {
+                                Image(systemName: "checkmark")
+                                    .font(.system(size: 8, weight: .bold))
+                                    .foregroundStyle(.white)
+                            }
                         }
+                        .frame(width: 14, height: 14)
+                        Text("Launch at login")
+                            .font(.system(size: 10.5, weight: .medium))
+                            .foregroundStyle(mutedInk)
                     }
-                    .frame(width: 14, height: 14)
-                    Text("Launch at login")
-                        .font(.system(size: 10.5, weight: .medium))
-                        .foregroundStyle(mutedInk)
+                    .contentShape(Rectangle())
                 }
-                .contentShape(Rectangle())
+                .buttonStyle(.plain)
+                .accessibilityLabel("Launch at login")
+                .accessibilityValue(model.launchAtLogin ? "On" : "Off")
+                Spacer()
+                Button { showingAbout.toggle() } label: {
+                    Image(systemName: "info.circle")
+                        .font(.system(size: 12, weight: .medium)).foregroundStyle(mutedInk)
+                        .frame(width: 20, height: 20)
+                }
+                .buttonStyle(.plain)
+                .onHover { hovering in
+                    withAnimation(.easeOut(duration: 0.12)) { showingAbout = hovering }
+                }
+                .accessibilityLabel("About Fade Out")
+                Button { model.stop(); NSApplication.shared.terminate(nil) } label: {
+                    Label("quit", systemImage: "power")
+                        .font(.system(size: 10.5, weight: .medium, design: .rounded))
+                        .foregroundStyle(violet)
+                        .padding(.leading, 5)
+                }
+                .buttonStyle(.plain).help("Quit Fade Out")
             }
-            .buttonStyle(.plain)
-            .accessibilityLabel("Launch at login")
-            .accessibilityValue(model.launchAtLogin ? "On" : "Off")
-            Spacer()
-            Button { showingAbout = true } label: {
-                Image(systemName: "info.circle")
-                    .font(.system(size: 12, weight: .medium)).foregroundStyle(mutedInk)
-                    .frame(width: 20, height: 20)
-            }
-            .buttonStyle(.plain).help("About Fade Out")
-            Button { model.stop(); NSApplication.shared.terminate(nil) } label: {
-                Label("quit", systemImage: "power")
-                    .font(.system(size: 10.5, weight: .medium, design: .rounded))
-                    .foregroundStyle(violet)
-                    .padding(.leading, 5)
-            }
-            .buttonStyle(.plain).help("Quit Fade Out")
         }
         .padding(.horizontal, 2)
     }
