@@ -639,7 +639,7 @@ html.js .reveal.is-visible {opacity:1;transform:translateY(0)}
       .then(response=>{if(!response.ok)throw new Error('Release unavailable');return response.json();})
       .then(release=>{
         if(release.draft)return;
-        const dmg=(release.assets||[]).find(asset=>/\\.dmg$/i.test(asset.name) && asset.browser_download_url);
+        const dmg=(release.assets||[]).find(asset=>asset.name.toLowerCase().endsWith('.dmg') && asset.browser_download_url);
         if(!dmg)return;
         downloadLink.href=dmg.browser_download_url;
         downloadLink.setAttribute('aria-label','Download Fade Out '+release.tag_name+' DMG for macOS');
